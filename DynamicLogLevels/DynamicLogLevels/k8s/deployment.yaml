@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dynamic-logs
+  labels:
+    app: dynamic-logs
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: dynamic-logs
+      labels:
+        app: dynamic-logs
+    spec:
+      containers:
+        - name: web-app
+          image: dynamic-logs:latest
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
+              #subPath: logSettings.json
+      restartPolicy: Always
+      volumes:
+        - name: config-volume
+          configMap:
+            # Provide the name of the ConfigMap containing the files you want
+            # to add to the container
+            name: dynamic-logs-cm
+  selector:
+    matchLabels:
+      app: dynamic-logs

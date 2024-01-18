@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dynamic-logs-cm
+data:
+  logSettings.json: |
+    {
+      "Serilog": {
+        "LevelSwitches": {
+          "$consoleSwitch": "Debug"
+        },
+        "Using": [
+          "Serilog.Sinks.Console"
+        ],
+        "MinimumLevel": "Verbose",
+        "WriteTo": [
+          {
+            "Name": "Console",
+            "Args": {
+              "levelSwitch": "$consoleSwitch"
+            }
+          }
+        ]
+      }
+    }
