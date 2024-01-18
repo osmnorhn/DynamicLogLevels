@@ -18,6 +18,7 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "DynamicLogLevels.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "DynamicLogLevels.dll"]
